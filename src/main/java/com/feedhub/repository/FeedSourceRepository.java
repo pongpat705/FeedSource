@@ -9,4 +9,5 @@ import com.feedhub.entity.FeedSource;
 @Repository
 public interface FeedSourceRepository extends PagingAndSortingRepository<FeedSource, Long>, JpaRepository<FeedSource, Long>{
 
+	FeedSource findByTitle(String title);
 }
