@@ -1,3 +1,22 @@
 <div>
-	<h1>{{test}}</h1>
+	<nav class="navbar navbar-dark bg-dark">
+		<a class="navbar-brand" style="color: #FFFFFF">NEWS</a>
+		<form class="form-inline">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">HOME</button>
+		</form>
+	</nav>
+	<br>
+	<div class = "container">
+		<form>
+			<div class="form-group">
+				<label for="title">TITLE:</label>
+				<input type="text" class="form-control" id="title" ng-model="title.title" style="width:50%;" >
+			</div>
+			<div class="form-group">
+				<label for="url">URL:</label>
+				<input type="text" class="form-control" id="url" ng-model="title.url" style="width:50%;">
+			</div>
+				<button type="submit" class="btn btn-primary" ng-click="save();" >SAVE</button>
+		</form>
+	</div>
 </div>
