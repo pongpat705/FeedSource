@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.feedhub.entity.FeedSource;
+import com.feedhub.model.Feed;
 import com.feedhub.model.ResponseModel;
+import com.feedhub.model.TitleBean;
 import com.feedhub.repository.FeedSourceRepository;
 import com.feedhub.services.RssServices;
 
@@ -28,37 +30,46 @@ public class ApiController {
 	private RssServices rssService;
 	
 	@RequestMapping(value="/getTitleList")
-	public ResponseModel<List<FeedSource>> getTitleList(){
-		List<FeedSource> data = new ArrayList<>();
+	public ResponseModel<List<TitleBean>> getTitleList(){
+		List<TitleBean> data = new ArrayList<>();
 		String response = "OK";
 		try {
-		
-			data = feedRepos.findAll();
+			List<FeedSource> feedSourceList = new ArrayList<>();
+			feedSourceList = feedRepos.findAll();
+			for (FeedSource feedSource : feedSourceList) {
+				TitleBean titleBean = new TitleBean();
+				titleBean.setSourceId(feedSource.getSourceId());
+				titleBean.setTitle(feedSource.getTitle());
+				String pubDate = rssService.getPubishDate(feedSource.getSourceId());
+				titleBean.setTimeStamp(pubDate);
+				
+				data.add(titleBean);
+			}
 			
 		} catch (Exception e) {
 			response = "ERROR";
 		}
 		
-		ResponseModel<List<FeedSource>> res = new ResponseModel<>();
+		ResponseModel<List<TitleBean>> res = new ResponseModel<>();
 		res.setData(data);
 		res.setResponse(response);
 		
 		return res;
 	}
 	
-	@RequestMapping(value="/getNewsList/{title}")
-	public ResponseModel<List<FeedSource>> getNewsList(@PathVariable String title){
-		List<FeedSource> data = new ArrayList<>();
+	@RequestMapping(value="/getNewsList/{sourceId}")
+	public ResponseModel<List<Feed>> getNewsList(@PathVariable Long sourceId){
+		List<Feed> data = new ArrayList<>();
 		String response = "OK";
 		try {
-			log.info("get news list by title {} ", title);
-			String result = rssService.getNewsFromRss(title);
+			log.info("get news list by title {} ",sourceId);
+			data = rssService.getNewsFromRss(sourceId);
 			
 		} catch (Exception e) {
 			response = "ERROR";
 		}
 		
-		ResponseModel<List<FeedSource>> res = new ResponseModel<>();
+		ResponseModel<List<Feed>> res = new ResponseModel<>();
 		res.setData(data);
 		res.setResponse(response);
 		
