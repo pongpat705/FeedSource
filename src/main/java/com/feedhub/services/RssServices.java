@@ -42,7 +42,7 @@ public class RssServices {
 						    throw new Exception("can't communicate with " + url);
 						}
 						
-						result = channel.getPubDate();
+						result = channel.getLastBuildDate();
 						
 					} catch (MalformedURLException e) {
 						// TODO Auto-generated catch block
