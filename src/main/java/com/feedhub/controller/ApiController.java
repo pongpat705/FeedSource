@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.feedhub.entity.FeedSource;
 import com.feedhub.model.Feed;
 import com.feedhub.model.ResponseModel;
+import com.feedhub.model.TitleBean;
 import com.feedhub.repository.FeedSourceRepository;
 import com.feedhub.services.RssServices;
 
@@ -29,18 +30,27 @@ public class ApiController {
 	private RssServices rssService;
 	
 	@RequestMapping(value="/getTitleList")
-	public ResponseModel<List<FeedSource>> getTitleList(){
-		List<FeedSource> data = new ArrayList<>();
+	public ResponseModel<List<TitleBean>> getTitleList(){
+		List<TitleBean> data = new ArrayList<>();
 		String response = "OK";
 		try {
-		
-			data = feedRepos.findAll();
+			List<FeedSource> feedSourceList = new ArrayList<>();
+			feedSourceList = feedRepos.findAll();
+			for (FeedSource feedSource : feedSourceList) {
+				TitleBean titleBean = new TitleBean();
+				titleBean.setSourceId(feedSource.getSourceId());
+				titleBean.setTitle(feedSource.getTitle());
+				String pubDate = rssService.getPubishDate(feedSource.getSourceId());
+				titleBean.setTimeStamp(pubDate);
+				
+				data.add(titleBean);
+			}
 			
 		} catch (Exception e) {
 			response = "ERROR";
 		}
 		
-		ResponseModel<List<FeedSource>> res = new ResponseModel<>();
+		ResponseModel<List<TitleBean>> res = new ResponseModel<>();
 		res.setData(data);
 		res.setResponse(response);
 		

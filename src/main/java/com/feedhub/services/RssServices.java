@@ -26,6 +26,46 @@ public class RssServices {
 
 	@Autowired FeedSourceRepository feedRepos;
 	
+	public String getPubishDate(Long sourceId) {
+		String result = null;
+		Optional<FeedSource> feedSource = feedRepos.findById(sourceId);
+		if(null != feedSource) {
+			String feedurl = feedSource.get().getUrl();
+					try {
+						RSSDigester digester=new RSSDigester();
+						String feed = feedurl;
+						URL url=new URL(feed);
+						HttpURLConnection httpSource = (HttpURLConnection)url.openConnection();
+						Channel channel=
+						    (Channel)digester.parse(httpSource.getInputStream());
+						if (channel==null) {
+						    throw new Exception("can't communicate with " + url);
+						}
+						
+						result = channel.getPubDate();
+						
+					} catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SAXException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
+	
+		}
+		
+		return result;
+
+	}
+	
 	public List<Feed> getNewsFromRss(Long sourceId) {
 
 		List<Feed> result = new ArrayList<>();
