@@ -41,15 +41,15 @@ public class AppController {
 			response = "ERROR";
 			result = "url not match";
 		}
-		
-		try {
-			feedRepos.save(feedSource);
-		} catch (Exception e) {
-			// TODO: handle exception
-			response = "ERROR";
-			result = e.getMessage();
+		if("OK".equals(response)) {
+			try {
+				feedRepos.save(feedSource);
+			} catch (Exception e) {
+				// TODO: handle exception
+				response = "ERROR";
+				result = e.getMessage();
+			}			
 		}
-		
 		
 		ResponseModel<String> res = new ResponseModel<>();
 		res.setData(result);
