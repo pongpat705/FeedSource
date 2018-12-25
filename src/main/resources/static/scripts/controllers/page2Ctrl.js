@@ -17,12 +17,11 @@ angular
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "http://localhost:8080/api/getTitleList",
+                    "url": "http://localhost:2000/api/getTitleList",
                     "type": "GET"
                 },
                 "columns": [
                      { "data": "title" },
-                    { "data": "url" },
                     {"defaultContent": "<button class='btn btn-danger btn-xs'>X</button>"}
                 ]
             } );
@@ -30,9 +29,9 @@ angular
             $('#news tbody').on( 'click', 'button', function () {
                 var data = table.row( $(this).parents('tr') ).data();
                 console.log( data.sourceId );
-                $http.post("http://localhost:8080/api/delete/" + data.sourceId).then(function (response) {
+                $http.post("http://localhost:2000/app/delete/" + data.sourceId).then(function (response) {
                     if(response.data.response == "ok"){
-                        alert(response.data.response);
+                        table.ajax.reload();
                     }else{
                         alert(response.data.response);
                     }
