@@ -36,11 +36,11 @@ public class AppController {
 			result = "url is empty";
 		}
 		
-		String regExp = "(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?";
-		if(!regExp.matches(feedSource.getUrl())) {
-			response = "ERROR";
-			result = "url not match";
-		}
+//		String regExp = "(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?";
+//		if(!regExp.matches(feedSource.getUrl())) {
+//			response = "ERROR";
+//			result = "url not match";
+//		}
 		if("OK".equals(response)) {
 			try {
 				feedRepos.save(feedSource);
