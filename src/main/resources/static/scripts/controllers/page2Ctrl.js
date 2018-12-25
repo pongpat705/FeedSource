@@ -30,6 +30,13 @@ angular
             $('#news tbody').on( 'click', 'button', function () {
                 var data = table.row( $(this).parents('tr') ).data();
                 console.log( data.sourceId );
+                $http.post("http://localhost:8080/api/delete/" + data.sourceId).then(function (response) {
+                    if(response.data.response == "ok"){
+                        alert(response.data.response);
+                    }else{
+                        alert(response.data.response);
+                    }
+                })
             } );
 
         } );
